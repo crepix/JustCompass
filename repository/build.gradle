@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace 'crepix.java_conf.gr.jp.repository'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk 30
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,12 +34,11 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.hilt.android)
+    kapt(libs.kapt.hilt.compiler)
+
+    testImplementation(testLibs.junit)
+    androidTestImplementation(testLibs.ext.junit)
+    androidTestImplementation(testLibs.espresso.core)
 }

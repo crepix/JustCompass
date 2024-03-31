@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'crepix.java_conf.gr.jp.justcompass'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "crepix.java_conf.gr.jp.justcompass"
         minSdk 30
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         vectorDrawables {
@@ -38,7 +38,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion '1.5.11'
     }
     packagingOptions {
         resources {
@@ -51,23 +51,24 @@ dependencies {
     implementation project(':repository')
     implementation project(':ui_base')
     implementation project(':feature:compass')
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'com.google.android.gms:play-services-wearable:18.0.0'
-    implementation 'androidx.percentlayout:percentlayout:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.wear.compose:compose-material:$wear_compose_version"
-    implementation "androidx.wear.compose:compose-foundation:$wear_compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.1.0-alpha01'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.play.service.wearable)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.preview)
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.activity.compose)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.kapt.hilt.compiler)
+
+    testImplementation(testLibs.junit)
+    androidTestImplementation(testLibs.ext.junit)
+    androidTestImplementation(testLibs.espresso.core)
+    androidTestImplementation(testLibs.ui.test.junit4)
+    androidTestImplementation(testLibs.ui.tooling)
+    debugImplementation(testLibs.ui.test.manifest)
 }
 
 kapt {

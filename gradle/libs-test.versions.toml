@@ -1,0 +1,10 @@
+[versions]
+compose = "1.6.4"
+
+[libraries]
+junit = { module = "junit:junit", version = "4.13.2" }
+ext-junit = { module = "androidx.test.ext:junit", version = "1.1.5" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.5.1" }
+ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }

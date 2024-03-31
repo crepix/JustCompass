@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace 'crepix.java_conf.gr.jp.compass'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk 30
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,27 +34,30 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.11'
+    }
 }
 
 dependencies {
     implementation project(':repository')
     implementation project(':ui_base')
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.1.0-alpha01'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.wear.compose:compose-material:$wear_compose_version"
-    implementation "androidx.wear.compose:compose-foundation:$wear_compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.preview)
+    implementation(libs.compose.foundation)
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.appcompat)
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.kapt.hilt.compiler)
+
+    testImplementation(testLibs.junit)
+    androidTestImplementation(testLibs.ext.junit)
+    androidTestImplementation(testLibs.espresso.core)
+    androidTestImplementation(testLibs.ui.test.junit4)
+    androidTestImplementation(testLibs.ui.tooling)
+    debugImplementation(testLibs.ui.test.manifest)
 }
