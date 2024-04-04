@@ -14,6 +14,7 @@ compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.r
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.7.0" }
 activity-compose = { module = "androidx.activity:activity-compose", version = "1.8.2" }
 appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version = "21.2.0" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }

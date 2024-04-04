@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error">方位の誤差が大きくなっています\n端末を回転させて測定を行ってください</string>
+</resources>

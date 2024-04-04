@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.compose.preview)
     implementation(libs.lifecycle.runtime)
     implementation(libs.activity.compose)
+    implementation(libs.play.services.location)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.kapt.hilt.compiler)
@@ -67,7 +68,7 @@ dependencies {
     androidTestImplementation(testLibs.ext.junit)
     androidTestImplementation(testLibs.espresso.core)
     androidTestImplementation(testLibs.ui.test.junit4)
-    androidTestImplementation(testLibs.ui.tooling)
+    debugImplementation(testLibs.ui.tooling)
     debugImplementation(testLibs.ui.test.manifest)
 }
 

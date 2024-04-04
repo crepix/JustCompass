@@ -1,7 +1,8 @@
 package crepix.java_conf.gr.jp.justcompass.di
 
 import android.content.Context
-import android.hardware.SensorManager
+import com.google.android.gms.location.FusedOrientationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,8 +13,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppProvideModule {
-
     @Provides
     @Singleton
-    fun provideSensorManager(@ApplicationContext context: Context) = context.getSystemService(SensorManager::class.java)!!
+    fun provideFusedOrientationProviderClient(@ApplicationContext context: Context): FusedOrientationProviderClient =
+        LocationServices.getFusedOrientationProviderClient(context)
 }

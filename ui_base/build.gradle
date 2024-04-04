@@ -48,6 +48,6 @@ dependencies {
     androidTestImplementation(testLibs.ext.junit)
     androidTestImplementation(testLibs.espresso.core)
     androidTestImplementation(testLibs.ui.test.junit4)
-    androidTestImplementation(testLibs.ui.tooling)
+    debugImplementation(testLibs.ui.tooling)
     debugImplementation(testLibs.ui.test.manifest)
 }

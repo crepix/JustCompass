@@ -12,6 +12,11 @@ interface DirectionRepository {
     val degree: StateFlow<Float>
 
     /**
+     * 誤差があるかどうか
+     */
+    val isError: StateFlow<Boolean>
+
+    /**
      * 方位の監視を開始する
      */
     suspend fun start()

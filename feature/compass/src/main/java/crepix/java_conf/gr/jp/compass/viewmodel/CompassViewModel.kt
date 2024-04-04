@@ -17,23 +17,24 @@ class CompassViewModel @Inject constructor(private val directionRepository: Dire
     private var plateVelocity: Float? = null
     private var needleVelocity = 0
     private var isNeedleFixed = false
-    private val uiStateInternal = MutableStateFlow(UiState(0f, 0f))
+    private var fixedDegree = 0f
+    private val uiStateInternal = MutableStateFlow(UiState(0f, 0f, false))
 
     val uiState: StateFlow<UiState> = uiStateInternal
 
     companion object {
-        private const val UI_REFRESH_RATE = 20L
+        private const val UI_REFRESH_RATE = 16L
     }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             directionRepository.degree.collect {
-                // TODO degreeに適用する
+                val degree = if (it <= 0) (it + 3600) % 360 else it % 360
                 if (plateVelocity == null) {
-                    uiStateInternal.value = UiState(it, it)
+                    uiStateInternal.value = UiState(degree, degree, directionRepository.isError.value)
                     plateVelocity = 0f
                 } else {
-                    val velocity = (it - uiStateInternal.value.planeDegree) / 10f
+                    val velocity = (degree - uiStateInternal.value.planeDegree) / 10f
                     plateVelocity = if (velocity >= 18f) {
                         (velocity - 36f)
                     } else if (velocity <= -18f) {
@@ -48,26 +49,30 @@ class CompassViewModel @Inject constructor(private val directionRepository: Dire
         viewModelScope.launch(Dispatchers.IO) {
             while (true) {
                 delay(UI_REFRESH_RATE)
+
                 plateVelocity?.let {
-                    val planeDegree = uiStateInternal.value.planeDegree + it
-                    val needleDegree =
-                        if (isNeedleFixed) {
-                            needleVelocity = 0
-                            uiStateInternal.value.needleDegree
-                        } else if (abs(planeDegree - uiStateInternal.value.needleDegree) <= 3f && needleVelocity <= 3) {
-                            needleVelocity = 0
-                            planeDegree
+                    val planeDegree = (uiStateInternal.value.planeDegree + it + 360) % 360
+                    val needleDegree = if (isNeedleFixed) {
+                        needleVelocity = 0
+                        fixedDegree
+                    } else if (
+                        abs(planeDegree - uiStateInternal.value.needleDegree) <= 2f &&
+                        needleVelocity <= 2 && needleVelocity >= -2
+                    ) {
+                        needleVelocity = 0
+                        planeDegree
+                    } else {
+                        val diff = planeDegree - uiStateInternal.value.needleDegree
+                        if ((diff <= 0 && diff >= -180) || diff >= 180) {
+                            if (needleVelocity >= -15) needleVelocity -= 1
+                            if (needleVelocity >= 0) needleVelocity -= 1
                         } else {
-                            if (planeDegree < uiStateInternal.value.needleDegree) {
-                                if (needleVelocity >= -15) needleVelocity -= 3
-                                if (needleVelocity >= 0) needleVelocity -= 1
-                            } else {
-                                if (needleVelocity <= 15) needleVelocity += 3
-                                if (needleVelocity <= 0) needleVelocity += 1
-                            }
-                            uiStateInternal.value.needleDegree + needleVelocity
+                            if (needleVelocity <= 15) needleVelocity += 1
+                            if (needleVelocity <= 0) needleVelocity += 1
                         }
-                    uiStateInternal.value = UiState(planeDegree, needleDegree)
+                        uiStateInternal.value.needleDegree + needleVelocity
+                    } + 360
+                    uiStateInternal.value = UiState(planeDegree, needleDegree % 360, directionRepository.isError.value)
                 }
             }
         }
@@ -87,14 +92,17 @@ class CompassViewModel @Inject constructor(private val directionRepository: Dire
 
     fun fixNeedlePosition(degree: Float) {
         isNeedleFixed = true
+        fixedDegree = if (degree <= 0) (degree + 3600) % 360 else degree % 360
     }
 
-    fun releaseNeedlePosition() {
+    fun releaseNeedlePosition(velocity: Int) {
         isNeedleFixed = false
+        needleVelocity = velocity
     }
 
     data class UiState(
         val planeDegree: Float,
-        val needleDegree: Float
+        val needleDegree: Float,
+        val isError: Boolean
     )
 }
