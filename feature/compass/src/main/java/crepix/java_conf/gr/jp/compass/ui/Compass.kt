@@ -1,6 +1,5 @@
 package crepix.java_conf.gr.jp.compass.ui
 
-import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -66,7 +64,6 @@ fun CompassScreenRoot(viewModel: CompassViewModel = hiltViewModel()) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    AndroidView({ View(it).apply { keepScreenOn = true } })
     Compass(
         viewModel.uiState.collectAsState(),
         { viewModel.fixNeedlePosition(it) },
@@ -160,6 +157,17 @@ fun Compass(
                     .aspectRatio(1f)
             )
 
+            Image(
+                painter = painterResource(id = R.drawable.needle),
+                contentDescription = "needle",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(1f)
+                    .padding(4.dp)
+                    .rotate(-uiState.value.needleDegree)
+                    .alpha(if (uiState.value.isError) 0.25f else 1f)
+            )
+
             if (!isPlaneFixed) {
                 Box(
                     modifier = Modifier
@@ -205,17 +213,6 @@ fun Compass(
                     )
                 }
             }
-
-            Image(
-                painter = painterResource(id = R.drawable.needle),
-                contentDescription = "needle",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .aspectRatio(1f)
-                    .padding(4.dp)
-                    .rotate(-uiState.value.needleDegree)
-                    .alpha(if (uiState.value.isError) 0.25f else 1f)
-            )
 
             if (uiState.value.isError) {
                 Text(
@@ -314,5 +311,5 @@ private val shape = GenericShape { size, _ ->
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
 fun DefaultPreview() {
-    Compass(MutableStateFlow(CompassViewModel.UiState(0f, 0f, false)).collectAsState(), {}, {})
+    Compass(MutableStateFlow(CompassViewModel.UiState(330f, 218f, false)).collectAsState(), {}, {})
 }
